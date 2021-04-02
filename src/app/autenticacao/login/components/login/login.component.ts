@@ -40,22 +40,18 @@ export class LoginComponent implements OnInit {
     const login: Login = this.form.value;
     this.loginService.logar(login)
       .subscribe(
-        (        data: { [x: string]: { [x: string]: string; }; }) => {
-          console.log(JSON.stringify(data));
+        (data: { [x: string]: { [x: string]: string; }; }) => {
           localStorage['token'] = data['data']['token'];
           const usuarioData = JSON.parse(
             atob(data['data']['token'].split('.')[1]));
-          console.log(JSON.stringify(usuarioData));
           if (usuarioData['role'] == 'ROLE_ADMIN') {
-          	alert('Deve redirecionar para a página de admin');
-            //this.router.navigate(['/admin']);
+            this.router.navigate(['/admin']);
           } else {
           	alert('Deve redirecionar para a página de funcionário');
-            //this.router.navigate(['/funcionario']);
+            this.router.navigate(['/funcionario']);
           }
         },
-        (        err: { [x: string]: number; }) => {
-          console.log(JSON.stringify(err));
+        (err: { [x: string]: number; }) => {
           let msg: string = "Tente novamente em instantes.";
           if (err['status'] == 401) {
             msg = "Email/senha inválido(s)."
